@@ -15,7 +15,7 @@
 <h1>Welcome to Game {$gameData.name}.</h1>
 <ul>
     {#each $gameData.level as level}
-        <li>{level.name}</li>
+        <a href="/triggers?game={$gameData.name}&level={level.name}">{level.name}</a>
     {/each}
 </ul>
 {/if}
