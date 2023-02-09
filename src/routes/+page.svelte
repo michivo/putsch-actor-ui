@@ -10,7 +10,7 @@
 	});
 </script>
 
-<div class="p-8">
+<div class="container mx-auto">
 	{#if $gameData === null}
 		<Heading customSize="text-2xl">Loading</Heading>
         <Spinner></Spinner>
