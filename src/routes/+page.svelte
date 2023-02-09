@@ -1,21 +1,25 @@
-<script>
-    import { onMount } from "svelte";
-    import { getGameDetails } from "../services/adaptorex";
-	import { gameData } from "../stores/gamestore";
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { getGameDetails } from '../services/adaptorex';
+	import { gameData } from '../stores/gamestore';
+    import { Button, Spinner, Heading } from 'flowbite-svelte';
 
-    onMount(async () => {
-        const game = await getGameDetails();
-        gameData.set(game);
-    });
+	onMount(async () => {
+		const game = await getGameDetails();
+		gameData.set(game);
+	});
 </script>
 
-{#if $gameData === null}
-<h1>Loading</h1>
-{:else}
-<h1>Welcome to Game {$gameData.name}.</h1>
-<ul>
-    {#each $gameData.level as level}
-        <a href="/triggers?game={$gameData.name}&level={level.name}">{level.name}</a>
-    {/each}
-</ul>
-{/if}
+<div class="p-8">
+	{#if $gameData === null}
+		<Heading customSize="text-2xl">Loading</Heading>
+        <Spinner></Spinner>
+	{:else}
+		<Heading customSize="text-2xl">Willkommen beim Spiel <em>{$gameData.name}</em></Heading>
+		<ul>
+			{#each $gameData.level as level}
+				<Button href="/triggers?game={$gameData.name}&level={level.name}">{level.name}</Button>
+			{/each}
+		</ul>
+	{/if}
+</div>

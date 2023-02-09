@@ -1,14 +1,21 @@
-import adapter from "sveltekit-adapter-firebase";
+import preprocess from 'svelte-preprocess';
+import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
-/** @type {import('@sveltejs/kit').Config} */
 export default {
-	preprocess: vitePreprocess(),
+	preprocess: [
+		vitePreprocess(),
+		preprocess({
+			postcss: true
+		})
+	],
 	kit: {
 		adapter: adapter({
-			outDir: 'build',
-			functionName: 'handler',
-			nodeVersion: '16'
-		  }),
-		},
+			pages: 'build',
+			assets: 'build',
+			fallback: null,
+			precompress: false,
+			strict: true
+		})
+	}
 };
