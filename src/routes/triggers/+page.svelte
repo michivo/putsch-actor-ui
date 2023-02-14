@@ -17,11 +17,11 @@
 	}
 </script>
 
-<div class="container mx-auto">
-	<Heading class="mb-4" customSize="text-3xl">Select a trigger</Heading>
-	<ul>
-		{#each triggerLocations as location}
-			<Button class="mb-2 w-full max-w-sm" on:click={async () => await triggerLocation(location)}>{location}</Button><br />
-		{/each}
-	</ul>
-</div>
+<Heading class="mb-4" customSize="text-3xl">Wähle einen Trigger</Heading>
+<ul>
+	{#each triggerLocations as location}
+		<Button class="mb-2 w-full max-w-sm" on:click={async () => await triggerLocation(location)}
+			>{location}</Button
+		><br />
+	{/each}
+</ul>
