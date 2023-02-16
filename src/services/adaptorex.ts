@@ -18,4 +18,5 @@ async function trigger(game: string, location: string): Promise<boolean> {
     return response.ok;
 }
 
+
 export { getGameDetails, trigger };

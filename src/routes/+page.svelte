@@ -11,13 +11,11 @@
 </script>
 
 {#if $gameData === null}
-	<Heading customSize="text-2xl">Loading</Heading>
 	<Spinner />
 {:else}
 	<Heading customSize="text-2xl">Willkommen beim Spiel <em>{$gameData.name}</em></Heading>
 	<ul>
-		{#each $gameData.level as level}
-			<Button href="/triggers?game={$gameData.name}&level={level.name}">{level.name}</Button>
-		{/each}
+		<Button href="/players">Spieler*innen</Button>
+		<Button href="/players">Trigger</Button>
 	</ul>
 {/if}
