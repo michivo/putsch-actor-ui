@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { Button, Navbar } from 'sveltestrap';
 	import { trigger } from '../../services/adaptorex';
 	import { locations } from '../../types/locations';
-	import { Button, Heading } from 'flowbite-svelte';
 
 	let game = '';
 	const triggerLocations = locations;
@@ -17,11 +17,9 @@
 	}
 </script>
 
-<Heading class="mb-4" customSize="text-3xl">Wähle einen Trigger</Heading>
+<Navbar class="mb-4">Wähle einen Trigger</Navbar>
 <ul>
 	{#each triggerLocations as location}
-		<Button class="mb-2 w-full max-w-sm" on:click={async () => await triggerLocation(location)}
-			>{location}</Button
-		><br />
+		<Button class="mb-2 w-full max-w-sm" on:click={async () => await triggerLocation(location)}>{location}</Button><br />
 	{/each}
 </ul>

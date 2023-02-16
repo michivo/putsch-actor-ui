@@ -1,5 +1,4 @@
 <script>
-	import '../app.postcss';
 	import Page from './+page.svelte';
 </script>
 
@@ -23,6 +22,6 @@
 		background-color: black;
 		color: white;
 		padding: 0 1rem;
-		border-radius: .5rem;
+		border-radius: 0.5rem;
 	}
 </style>

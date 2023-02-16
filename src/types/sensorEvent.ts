@@ -1,8 +1,8 @@
 interface SensorEvent {
-    sensorId: string,
-    playerId: string,
-    eventDateUtc: string,
-    value: string | number | boolean,
+	sensorId: string;
+	playerId: string;
+	eventDateUtc: string;
+	value: string | number | boolean;
 }
 
-export type { SensorEvent }
+export type { SensorEvent };
