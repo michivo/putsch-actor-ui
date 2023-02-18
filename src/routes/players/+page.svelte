@@ -19,16 +19,25 @@
 	}
 </script>
 
-<Navbar color="primary" dark><NavbarBrand>Wähle Spieler*in</NavbarBrand><Button color="warning" href="..">X</Button></Navbar>
+<Navbar color="light"
+	><NavbarBrand>Wähle Spieler*in</NavbarBrand><Button class="btn-lg" color="warning" href="..">X</Button></Navbar
+>
 
 {#if !loaded}
 	<Spinner />
 {:else}
-	<ul>
-		{#each players as player}
-			<Button class="m-2" on:click={() => showPlayer(player)} href="../player"
-				>{player.id}</Button
-			>
-		{/each}
-	</ul>
+	<div class="container">
+		<div class="row">
+			{#each players as player}
+				<div class="col-4 col-md-4">
+					<Button
+						class="btn-lg btn-block m-2 w-100"
+						color="info"
+						on:click={() => showPlayer(player)}
+						href="../player">{player.id}</Button
+					>
+				</div>
+			{/each}
+		</div>
+	</div>
 {/if}

@@ -10,12 +10,12 @@
 	});
 </script>
 
-<Navbar color="secondary"><NavbarBrand>Willkommen bei putsch</NavbarBrand></Navbar>
+<Navbar color="light"><NavbarBrand>Willkommen bei putsch</NavbarBrand></Navbar>
 {#if $gameData === null}
 	<Spinner />
 {:else}
-	<ul>
-		<Button href="/players">Spieler*innen</Button>
-		<Button href="/players">Trigger</Button>
-	</ul>
+	<div class="d-flex flex-column">
+		<Button class="btn btn-lg m-2" href="/players">Spieler*innen</Button>
+		<!-- <Button class="btn btn-lg m-2" href="/players">Trigger</Button> -->
+	</div>
 {/if}
