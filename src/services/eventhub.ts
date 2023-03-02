@@ -15,6 +15,10 @@ async function getActiveQuest(playerId: string): Promise<PlayerQuestStage | unde
     `https://putsch-event-hub.uc.r.appspot.com/api/v1/events/stage?playerId=${playerId}`,
     { method: 'GET' }
   );
+  if(response.status >= 400) {
+    console.log(`Error getting active quest for ${playerId}: ${response.statusText}`);
+    return undefined;
+  }
   const data = (await response.json()) as PlayerQuestStage | undefined;
   return data;
 }
@@ -50,4 +54,15 @@ async function triggerEvent(playerId: string, sensorId: string): Promise<void> {
   });
 }
 
-export { getPlayers, getActiveQuest, getQuests, selectQuest, triggerEvent };
+async function resetPlayer(playerId: string): Promise<void> {
+  const requestBody = { playerId };
+  await fetch('https://putsch-event-hub.uc.r.appspot.com/api/v1/events/players/resetRequests', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestBody),
+  });
+}
+
+export { getPlayers, getActiveQuest, getQuests, selectQuest, resetPlayer, triggerEvent };
