@@ -1,4 +1,4 @@
-const observePositions: string[] = [
+const staircases: string[] = [
 	'Hauptstiege OG1',
 	'Hauptstiege Mezzanin 2',
 	'OG2 Bibliothek',
@@ -13,7 +13,10 @@ const observePositions: string[] = [
 	'kleiner Gang Keller',
 	'Hauptstiege Keller',
 	'Hauptstiege EG',
-	'Hauptstiege Mezzanin 1',
+	'Hauptstiege Mezzanin 1'
+];
+
+const offices: string[] = [
 	'Büro 711',
 	'Büro 712',
 	'Büro 713',
@@ -31,4 +34,4 @@ const observePositions: string[] = [
 	'Büro 724',
 ];
 
-export { observePositions };
+export { staircases, offices };
