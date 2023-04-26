@@ -18,13 +18,16 @@
   import type { Quest, PlayerQuestStage } from '../../types/quest';
   import StageInfo from './StageInfo.svelte';
   import QuestSelection from './QuestSelection.svelte';
+    import { page } from '$app/stores';
 
   let currentStage: PlayerQuestStage | undefined = undefined;
   let quests: Quest[] | undefined = undefined;
   let loading = false;
   let modalOpen = false;
+  let phaseId = '';
 
   onMount(async () => {
+    phaseId = $page.url.searchParams.get('phaseId') ?? '';
     loading = true;
     if (!$currentPlayer) {
       return;
@@ -39,7 +42,7 @@
     } finally {
       try {
         if (!currentStage || currentStage.stageIndex === -1) {
-          quests = await getQuests();
+          quests = await getQuests($currentPlayer!.id, phaseId);
         }
       } finally {
         loading = false;
@@ -79,7 +82,7 @@
     ><NavbarBrand>Spieler*in {$currentPlayer.id}</NavbarBrand><Button
       class="btn-lg"
       color="warning"
-      href="..">X</Button
+      href="players?phaseId={phaseId}">X</Button
     ></Navbar
   >
   {#if loading}

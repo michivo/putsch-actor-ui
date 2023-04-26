@@ -23,9 +23,18 @@ async function getActiveQuest(playerId: string): Promise<PlayerQuestStage | unde
   return data;
 }
 
-async function getQuests() {
+async function getAllQuests() {
   const response = await fetch(
-    `https://putsch-event-hub.uc.r.appspot.com/api/v1/game-data/quests?getAll=true`,
+    'https://putsch-event-hub.uc.r.appspot.com/api/v1/game-data/quests',
+    { method: 'GET' }
+  );
+  const data = (await response.json()) as Quest[] | undefined;
+  return data;
+}
+
+async function getQuests(playerId: string, phaseId: string) {
+  const response = await fetch(
+    `https://putsch-event-hub.uc.r.appspot.com/api/v1/events/playableQuests?playerId=${playerId}&phaseId=${phaseId}`,
     { method: 'GET' }
   );
   const data = (await response.json()) as Quest[] | undefined;
@@ -65,4 +74,4 @@ async function resetPlayer(playerId: string): Promise<void> {
   });
 }
 
-export { getPlayers, getActiveQuest, getQuests, selectQuest, resetPlayer, triggerEvent };
+export { getPlayers, getActiveQuest, getAllQuests, getQuests, selectQuest, resetPlayer, triggerEvent };

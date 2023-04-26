@@ -4,11 +4,14 @@
 	import { getPlayers } from '../../services/eventhub';
 	import { currentPlayer } from '../../stores/gamestore';
 	import type { Player } from '../../types/player';
+    import { page } from '$app/stores';
 
 	let players: Player[] = [];
 	let loaded = false;
+	let phaseId = '';
 
 	onMount(async () => {
+		phaseId = $page.url.searchParams.get('phaseId') ?? '';
 		currentPlayer.set(null);
 		players = await getPlayers();
 		loaded = true;
@@ -20,7 +23,7 @@
 </script>
 
 <Navbar color="light"
-	><NavbarBrand>Wähle Spieler*in</NavbarBrand><Button class="btn-lg" color="warning" href="..">X</Button></Navbar
+	><NavbarBrand>Wähle Spieler*in</NavbarBrand><Button class="btn-lg" color="warning" href="{phaseId ? `/phase${phaseId}` : '..'}">X</Button></Navbar
 >
 
 {#if !loaded}
@@ -34,7 +37,7 @@
 						class="btn-lg btn-block m-2 w-100"
 						color="info"
 						on:click={() => showPlayer(player)}
-						href="../player">{player.id}</Button
+						href="../player?playerId={player.id}&phaseId={phaseId}">{player.id}</Button
 					>
 				</div>
 			{/each}

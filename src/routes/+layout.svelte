@@ -1,9 +1,16 @@
 <script>
-	import Page from './+page.svelte';
+    import { npc } from '../stores/npcstore';
+
+	let npcName = '';
+
+	npc.subscribe(value => {
+		console.log(value);
+		npcName = value ?? '';
+	})
 </script>
 
 <div class="container mx-auto">
-	<header>putsch</header>
+	<header><span>putsch</span><span>{npcName}</span><span><a href="/">🏠</a></span></header>
 	<slot />
 </div>
 
@@ -16,6 +23,8 @@
 			U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 	}
 	header {
+		display: flex;
+		justify-content: space-between;
 		font-family: 'Orbitron';
 		font-weight: 900;
 		font-size: 30pt;
@@ -23,5 +32,9 @@
 		color: white;
 		padding: 0 1rem;
 		border-radius: 0.5rem;
+	}
+
+	header a {
+		text-decoration: none;
 	}
 </style>

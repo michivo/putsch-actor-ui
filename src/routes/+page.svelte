@@ -9,3 +9,8 @@
   <Button class="btn btn-lg m-2" href="/phase3">Phase 3</Button>
   <!-- <Button class="btn btn-lg m-2" href="/players">Trigger</Button> -->
 </div>
+<hr>
+<div class="d-flex flex-column">
+  <Button class="btn btn-lg m-2" href="/npc-select">NPC-Auswahl</Button>
+  <!-- <Button class="btn btn-lg m-2" href="/players">Trigger</Button> -->
+</div>

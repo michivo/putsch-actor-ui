@@ -4,6 +4,7 @@
 
 <div class="d-flex flex-column">
   <Button class="btn btn-lg m-2" href="/observe-positions"><em>Be</em>obachtungs<em>pos</em>itionen</Button>
+  <Button class="btn btn-lg m-2" href="/players?phaseId=1">Spieler*innen</Button>
 </div>
 
 <style>
