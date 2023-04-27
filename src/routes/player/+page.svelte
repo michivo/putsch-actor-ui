@@ -6,19 +6,17 @@
     ModalBody,
     ModalFooter,
     ModalHeader,
-    Navbar,
-    NavbarBrand,
     Spinner,
     Toast,
     ToastBody,
     ToastHeader,
   } from 'sveltestrap';
-  import { getActiveQuest, getQuests, resetPlayer } from '../../services/eventhub';
+  import { getActiveQuest, getPlayers, getQuests, resetPlayer } from '../../services/eventhub';
   import { currentPlayer } from '../../stores/gamestore';
   import type { Quest, PlayerQuestStage } from '../../types/quest';
   import StageInfo from './StageInfo.svelte';
   import QuestSelection from './QuestSelection.svelte';
-    import { page } from '$app/stores';
+  import { page } from '$app/stores';
 
   let currentStage: PlayerQuestStage | undefined = undefined;
   let quests: Quest[] | undefined = undefined;
@@ -30,7 +28,15 @@
     phaseId = $page.url.searchParams.get('phaseId') ?? '';
     loading = true;
     if (!$currentPlayer) {
-      return;
+      const playerId = $page.url.searchParams.get('playerId');
+      if (playerId) {
+        const allPlayers = await getPlayers();
+        const player = allPlayers.find((p) => p.id == playerId);
+        currentPlayer.set(player || null);
+      }
+      if (!$currentPlayer) {
+        return;
+      }
     }
     await loadData();
   });
@@ -38,7 +44,6 @@
   async function loadData() {
     try {
       currentStage = await getActiveQuest($currentPlayer!.id);
-      console.log(currentStage);
     } finally {
       try {
         if (!currentStage || currentStage.stageIndex === -1) {
@@ -77,41 +82,54 @@
   };
 </script>
 
-{#if $currentPlayer}
-  <Navbar color="light"
-    ><NavbarBrand>Spieler*in {$currentPlayer.id}</NavbarBrand><Button
-      class="btn-lg"
-      color="warning"
-      href="players?phaseId={phaseId}">X</Button
-    ></Navbar
-  >
-  {#if loading}
-    <Spinner />
-  {:else if currentStage}
-    <StageInfo {currentStage} />
+<div>
+  {#if $currentPlayer}
+    <div class="topbar">
+      <span class="player-name">Spieler*in {$currentPlayer.id}</span>
+      <Button class="btn-lg btn-close" aria-label="Close" href="/all-players?phaseId={phaseId}" />
+    </div>
+    {#if loading}
+      <Spinner />
+    {:else if currentStage && currentStage.stageIndex !== -1}
+      <StageInfo {currentStage} />
+    {/if}
+    {#if !loading && (!currentStage || currentStage.stageIndex === -1) && quests}
+      <QuestSelection {quests} on:questSelected={onQuestSelected} />
+    {/if}
     <Button class="btn-lg w-100 m-2" color="warning" on:click={openModal}>Zurücksetzen</Button>
-  {/if}
-  {#if !loading && (!currentStage || currentStage.stageIndex === -1) && quests}
-    <QuestSelection {quests} on:questSelected={onQuestSelected} />
-  {/if}
 
-  <Modal isOpen={modalOpen}>
-    <ModalHeader>Zurücksetzen</ModalHeader>
-    <ModalBody>
-      Willst du Spieler*in {$currentPlayer.id} wirklich zurücksetzen?
-    </ModalBody>
-    <ModalFooter>
-      <Button color="primary" on:click={resetCurrentPlayer}>Ja</Button>
-      <Button color="secondary" on:click={closeModal}>Nein</Button>
-    </ModalFooter>
-  </Modal>
-{:else}
-  <div class="p-3 bg-danger mb-3">
-    <Toast class="me-1">
-      <ToastHeader>Kein*e Spieler*in ausgewählt</ToastHeader>
-      <ToastBody>
-        <a href="../players">Zurück zur Auswahl</a>
-      </ToastBody>
-    </Toast>
-  </div>
-{/if}
+    <Modal isOpen={modalOpen}>
+      <ModalHeader>Zurücksetzen</ModalHeader>
+      <ModalBody>
+        Willst du Spieler*in {$currentPlayer.id} wirklich zurücksetzen?
+      </ModalBody>
+      <ModalFooter>
+        <Button color="primary" on:click={resetCurrentPlayer}>Ja</Button>
+        <Button color="secondary" on:click={closeModal}>Nein</Button>
+      </ModalFooter>
+    </Modal>
+  {:else}
+    <div class="p-3 bg-danger mb-3">
+      <Toast class="me-1">
+        <ToastHeader>Kein*e Spieler*in ausgewählt</ToastHeader>
+        <ToastBody>
+          <a href="/all-players?phaseId={phaseId}">Zurück zur Auswahl</a>
+        </ToastBody>
+      </Toast>
+    </div>
+  {/if}
+</div>
+
+<style>
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border: 2px solid #aaa;
+    font-size: 1.5rem;
+    padding: 0.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    background-color: #eee;
+  }
+</style>
