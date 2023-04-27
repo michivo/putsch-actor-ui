@@ -1,11 +1,59 @@
-<script>
+<script lang="ts">
+  import { putschFirestore } from '../tools/firebase';
+  import { collection, getDocs, onSnapshot, type Unsubscribe } from 'firebase/firestore';
+  import { onMount, onDestroy } from 'svelte';
   import { npc } from '../stores/npcstore';
+  import type { PlayerQuestStage } from '../types/quest';
+  import { questData } from '../stores/gamestore';
+  import { Badge } from 'sveltestrap';
 
   let npcName = '';
+  let firestoreUnsubscribe: Unsubscribe;
+  let relevantQuests: PlayerQuestStage[] = [];
+  let allQuests: PlayerQuestStage[] = [];
+
+  onMount(async () => {
+    questData.subscribe((d) => {
+      allQuests = d ?? [];
+      updateQuestInfo();
+    });
+
+    const querySnapshot = await getDocs(collection(putschFirestore, 'playerQuests'));
+    const initialData: PlayerQuestStage[] = [];
+    querySnapshot.forEach((doc) => {
+      const playerData = doc.data() as PlayerQuestStage;
+      initialData.push(playerData);
+    });
+    questData.set(initialData);
+
+    firestoreUnsubscribe = onSnapshot(collection(putschFirestore, 'playerQuests'), (data) => {
+      const updatedData: PlayerQuestStage[] = [];
+      data.docs.forEach((doc) => {
+        const sensorEvent = doc.data() as PlayerQuestStage;
+        updatedData.push(sensorEvent);
+      });
+      updatedData.sort((a, b) => a.questId.localeCompare(b.questId));
+      questData.set(updatedData);
+    });
+  });
+
+  onDestroy(() => {
+    if (firestoreUnsubscribe) {
+      firestoreUnsubscribe();
+    }
+  });
+
+  function updateQuestInfo() {
+    if (!npcName) {
+      relevantQuests = [];
+    } else {
+      relevantQuests = allQuests.filter((q) => q.npcName === npcName);
+    }
+  }
 
   npc.subscribe((value) => {
-    console.log(value);
     npcName = value ?? '';
+    updateQuestInfo();
   });
 </script>
 
@@ -13,7 +61,11 @@
   <header>
     <span>putsch</span>
     {#if !!npcName}
-      <span class="npc-name">{npcName}</span>
+      <a class="npc-name"
+        href="npc-quests"
+        >{npcName}
+        <Badge pill color="info" style="font-family: sans-serif; font-size: 1rem;">{ relevantQuests.length }</Badge>
+      </a>
     {/if}
     <span><a href="/">🏠</a></span>
   </header>
@@ -48,7 +100,7 @@
     border-radius: 0.5rem;
   }
 
-  span.npc-name {
+  a.npc-name {
     font-family: 'OrbitronMedium';
     font-weight: 400;
     background-color: #555;
@@ -56,6 +108,8 @@
     padding-right: 0.5rem;
     border-radius: 0.5rem;
     border: 1px solid white;
+    color:white;
+    text-decoration: underline;
   }
 
   header a {
