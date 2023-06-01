@@ -96,7 +96,9 @@
     {#if !loading && (!currentStage || currentStage.stageIndex === -1) && quests}
       <QuestSelection {quests} on:questSelected={onQuestSelected} />
     {/if}
-    <Button class="btn-lg w-100 m-2" color="warning" on:click={openModal}>Zurücksetzen</Button>
+    <Button class="w-100 btn btn-lg m-2 btn-warning" href="/all-players?phaseId={phaseId}">Spieler*innenauswahl</Button>
+    <Button class="w-100 btn btn-lg m-2 btn-warning" href="/phase{phaseId}">Phase {phaseId}</Button>
+    <Button class="w-100 btn btn-lg m-2 btn-warning" href="/">Startbildschirm</Button>
 
     <Modal isOpen={modalOpen}>
       <ModalHeader>Zurücksetzen</ModalHeader>

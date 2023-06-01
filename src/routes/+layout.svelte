@@ -32,7 +32,7 @@
         const sensorEvent = doc.data() as PlayerQuestStage;
         updatedData.push(sensorEvent);
       });
-      updatedData.sort((a, b) => a.questId.localeCompare(b.questId));
+      updatedData.sort((a, b) => (a.questId ?? '').localeCompare(b.questId ?? ''));
       questData.set(updatedData);
     });
   });
@@ -57,19 +57,22 @@
   });
 </script>
 
-<div class="container mx-auto">
+<div class="container mx-auto d-flex flex-column">
   <header>
     <span>putsch</span>
     {#if !!npcName}
-      <a class="npc-name"
-        href="npc-quests"
+      <a class="npc-name" href="npc-quests"
         >{npcName}
-        <Badge pill color="info" style="font-family: sans-serif; font-size: 1rem;">{ relevantQuests.length }</Badge>
+        <Badge pill color="info" style="font-family: sans-serif; font-size: 1rem;"
+          >{relevantQuests.length}</Badge
+        >
       </a>
     {/if}
     <span><a href="/">🏠</a></span>
   </header>
-  <slot />
+  <main>
+    <slot />
+  </main>
 </div>
 
 <style>
@@ -100,6 +103,12 @@
     border-radius: 0.5rem;
   }
 
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
   a.npc-name {
     font-family: 'OrbitronMedium';
     font-weight: 400;
@@ -108,11 +117,15 @@
     padding-right: 0.5rem;
     border-radius: 0.5rem;
     border: 1px solid white;
-    color:white;
+    color: white;
     text-decoration: underline;
   }
 
   header a {
     text-decoration: none;
+  }
+
+  div.container {
+    height: 100%;
   }
 </style>
