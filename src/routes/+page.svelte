@@ -10,5 +10,6 @@
 </div>
 <hr>
 <div class="d-flex flex-column">
-  <Button class="btn btn-lg m-2" href="/npc-select">NPC-Einstellungen</Button>
+  <Button class="btn btn-lg m-2" color="info" href="/volume-settings">Lautstärke</Button>
+  <Button class="btn btn-lg m-2" color="info" href="/npc-select">NPC-Einstellungen</Button>
 </div>

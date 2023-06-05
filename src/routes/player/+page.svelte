@@ -2,10 +2,6 @@
   import { onMount } from 'svelte';
   import {
     Button,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
     Spinner,
     Toast,
     ToastBody,
@@ -21,7 +17,6 @@
   let currentStage: PlayerQuestStage | undefined = undefined;
   let quests: Quest[] | undefined = undefined;
   let loading = false;
-  let modalOpen = false;
   let phaseId = '';
 
   onMount(async () => {
@@ -61,25 +56,6 @@
     await loadData();
     loading = false;
   }
-
-  async function resetCurrentPlayer() {
-    try {
-      if ($currentPlayer) {
-        await resetPlayer($currentPlayer.id);
-        await loadData();
-      }
-    } finally {
-      closeModal();
-    }
-  }
-
-  const openModal = () => {
-    modalOpen = true;
-  };
-
-  const closeModal = () => {
-    modalOpen = false;
-  };
 </script>
 
 <div>
@@ -99,17 +75,6 @@
     <Button class="w-100 btn btn-lg m-2 btn-warning" href="/all-players?phaseId={phaseId}">Spieler*innenauswahl</Button>
     <Button class="w-100 btn btn-lg m-2 btn-warning" href="/phase{phaseId}">Phase {phaseId}</Button>
     <Button class="w-100 btn btn-lg m-2 btn-warning" href="/">Startbildschirm</Button>
-
-    <Modal isOpen={modalOpen}>
-      <ModalHeader>Zurücksetzen</ModalHeader>
-      <ModalBody>
-        Willst du Spieler*in {$currentPlayer.id} wirklich zurücksetzen?
-      </ModalBody>
-      <ModalFooter>
-        <Button color="primary" on:click={resetCurrentPlayer}>Ja</Button>
-        <Button color="secondary" on:click={closeModal}>Nein</Button>
-      </ModalFooter>
-    </Modal>
   {:else}
     <div class="p-3 bg-danger mb-3">
       <Toast class="me-1">
