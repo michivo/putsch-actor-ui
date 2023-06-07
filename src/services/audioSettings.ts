@@ -12,7 +12,8 @@ async function updateVolume(audioSettings: AudioSettings): Promise<void> {
 
 async function getVolume(playerId: string): Promise<AudioSettings> {
   const response = await fetch(`https://putsch-event-hub.uc.r.appspot.com/api/v1/audio?playerId=${playerId}`, {
-    method: 'GET'
+    method: 'GET', headers: {
+      'Cache-Control': 'no-cache' } 
   });
 
   const data = (await response.json()) as AudioSettings;

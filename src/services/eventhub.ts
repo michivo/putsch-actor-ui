@@ -26,7 +26,8 @@ async function getActiveQuest(playerId: string): Promise<PlayerQuestStage | unde
 async function getAllQuests() {
   const response = await fetch(
     'https://putsch-event-hub.uc.r.appspot.com/api/v1/game-data/quests',
-    { method: 'GET' }
+    { method: 'GET', headers: {
+      'Cache-Control': 'no-cache' } }
   );
   const data = (await response.json()) as Quest[] | undefined;
   return data;
@@ -35,7 +36,8 @@ async function getAllQuests() {
 async function getQuests(playerId: string, phaseId: string) {
   const response = await fetch(
     `https://putsch-event-hub.uc.r.appspot.com/api/v1/events/playableQuests?playerId=${playerId}&phaseId=${phaseId}`,
-    { method: 'GET' }
+    { method: 'GET', headers: {
+      'Cache-Control': 'no-cache' }  }
   );
   const data = (await response.json()) as Quest[] | undefined;
   return data;

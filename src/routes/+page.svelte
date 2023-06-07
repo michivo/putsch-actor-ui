@@ -10,6 +10,7 @@
 </div>
 <hr>
 <div class="d-flex flex-column">
-  <Button class="btn btn-lg m-2" color="info" href="/volume-settings">Lautstärke</Button>
+  <Button class="btn btn-lg m-2" color="info" href="/volume-settings">Lautstärke Spieler*innen</Button>
+  <Button class="btn btn-lg m-2" color="info" href="/volume-settings-radio">Lautstärke Radios</Button>
   <Button class="btn btn-lg m-2" color="info" href="/npc-select">NPC-Einstellungen</Button>
 </div>

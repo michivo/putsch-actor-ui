@@ -18,6 +18,8 @@
   let quests: Quest[] | undefined = undefined;
   let loading = false;
   let phaseId = '';
+  let forceQuestSelection = false;
+  $: showStageInfo = currentStage && currentStage.stageIndex !== -1 && !forceQuestSelection;
 
   onMount(async () => {
     phaseId = $page.url.searchParams.get('phaseId') ?? '';
@@ -52,9 +54,21 @@
 
   async function onQuestSelected() {
     loading = true;
+    forceQuestSelection = false;
     await new Promise((r) => setTimeout(r, 500));
     await loadData();
     loading = false;
+  }
+
+  async function onForceQuestSelection() {
+    forceQuestSelection = true;
+    loading = true;
+    try {
+      quests = await getQuests($currentPlayer!.id, phaseId);
+    }
+    finally {
+      loading = false;
+    }
   }
 </script>
 
@@ -66,11 +80,14 @@
     </div>
     {#if loading}
       <Spinner />
-    {:else if currentStage && currentStage.stageIndex !== -1}
+    {:else if showStageInfo && currentStage}
       <StageInfo {currentStage} />
     {/if}
-    {#if !loading && (!currentStage || currentStage.stageIndex === -1) && quests}
+    {#if !loading && !showStageInfo && quests}
       <QuestSelection {quests} on:questSelected={onQuestSelected} />
+    {/if}
+    {#if showStageInfo}
+    <Button class="w-100 btn btn-lg m-2 btn-warning" on:click={onForceQuestSelection}>Questauswahl</Button>
     {/if}
     <Button class="w-100 btn btn-lg m-2 btn-warning" href="/all-players?phaseId={phaseId}">Spieler*innenauswahl</Button>
     <Button class="w-100 btn btn-lg m-2 btn-warning" href="/phase{phaseId}">Phase {phaseId}</Button>
