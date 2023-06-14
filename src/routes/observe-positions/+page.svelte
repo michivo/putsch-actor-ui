@@ -28,7 +28,6 @@
       >Büro
     </Button>
     <div class="flex-fill" />
-    <Button class="btn btn-lg m-2 btn-warning" href="/phase1">Phase 1</Button>
     <Button class="btn btn-lg m-2 btn-warning" href="/">Startbildschirm</Button>
   {:else}
     <Navbar color="light"
@@ -46,7 +45,6 @@
       {/each}
     </div>
     <Button class="btn btn-lg m-2 btn-warning" on:click={() => positionType = ''}>BePo-Kategorien</Button>
-    <Button class="btn btn-lg m-2 btn-warning" href="/phase1">Phase 1</Button>
     <Button class="btn btn-lg m-2 btn-warning" href="/">Startbildschirm</Button>
   {/if}
 </div>

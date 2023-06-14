@@ -29,8 +29,17 @@
   <Alert color="success">Quest {currentStage.name} abgeschlossen</Alert>
 {:else}
   {#each currentStage.triggerIds as triggerId}
-    <Button class="btn-lg w-100 m-2" color="info" on:click={async () => onTrigger(triggerId)}
-      >{triggerId}</Button
-    >
+      <Button class={'btn-lg w-100 m-2 ' + currentStage.triggerType} color="info" on:click={async () => onTrigger(triggerId)}>{currentStage.triggerType === 'NPC' ? '' : `${currentStage.triggerType}: `} {triggerId}</Button>
   {/each}
 {/if}
+
+<style>
+
+  :global(button.ORT) {
+    background-color: orangered;
+  }
+
+  :global(button.QUEST) {
+    background-color: olivedrab;
+  }
+</style>
